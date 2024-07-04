@@ -1,47 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Timer</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css"
-    />
-    <link rel="stylesheet" href="./css/timer.css" />
-  </head>
-  <body>
-    <a href="./index.html" class="timer-home">Go to home</a>
+import { fetchImages } from './js/pixabay-api';
+import { renderGallery } from './js/render-functions';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+import './css/styles.css';
 
-    <div class="input-wrapper">
-      <input type="text" id="datetime-picker" />
-      <button type="button" data-start>Start</button>
-    </div>
+const form = document.querySelector('.search-form');
+const gallery = document.querySelector('.gallery');
+const loader = document.querySelector('.loader');
 
-    <div class="timer">
-      <div class="field">
-        <span class="value" data-days>00</span>
-        <span class="label">Days</span>
-      </div>
-      <div class="field">
-        <span class="value" data-hours>00</span>
-        <span class="label">Hours</span>
-      </div>
-      <div class="field">
-        <span class="value" data-minutes>00</span>
-        <span class="label">Minutes</span>
-      </div>
-      <div class="field">
-        <span class="value" data-seconds>00</span>
-        <span class="label">Seconds</span>
-      </div>
-    </div>
+form.addEventListener('submit', onSearch);
 
-    <script type="module" src="./js/1-timer.js"></script>
-  </body>
-</html>
+function onSearch(event) {
+  event.preventDefault();
+  const querty = event.currentTarget.elements.searchQuery.value.toLowerCase();
+
+  if (querty === '') {
+    iziToast.error({
+      title: 'Error',
+      message: 'Please enter a search query!',
+    });
+    return;
+  }
+  loader.style.display = 'block';
+  gallery.innerHTML = '';
+  fetchImages(querty)
+    .then(data => {
+      if (data.hits.length === 0) {
+        iziToast.info({
+          title: 'Info',
+          message:
+            'Sorry, there are no images matching your search query. Please try again!',
+        });
+      } else {
+        renderGallery(data.hits);
+      }
+    })
+    .catch(error => {
+      iziToast.error({
+        title: 'Error',
+        message: 'Something went wrong: ${error.message}',
+      });
+    })
+    .finally(() => {
+      loader.style.display = 'none';
+    });
+}
