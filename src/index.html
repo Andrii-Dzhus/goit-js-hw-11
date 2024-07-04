@@ -8,9 +8,24 @@
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
-    <div class="main">
-      <a href="./1-timer.html" class="timer">Timer</a>
-      <a href="./2-snackbar.html" class="snackbar">Snackbar</a>
-    </div>
-  </body>
+    <header>
+      <form id="search-form" class="search-form">
+        <input
+          type="text"
+          name="searchQuery"
+          autocomplete="off"
+          placeholder="Search images..."
+        />
+        <button type="submit">Search</button>
+      </form>
+    </header>
+    <main>
+      <div class="loader" style="display: none;">Loading...</div>
+      <ul class="gallery"></ul>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+
+
+
 </html>
