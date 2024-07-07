@@ -67,6 +67,7 @@ header {
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
 }
 
 .photo-card img {
@@ -75,7 +76,7 @@ header {
 }
 
 .photo-card .info {
-  padding: 10px;
+  padding: 4px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,5 +84,9 @@ header {
 
 .info-item {
   margin: 0;
-  font-size: 14px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.info {
 }
